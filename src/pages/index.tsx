@@ -3,6 +3,8 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import { GetServerSideProps } from "next";
+import Footer from "@/componentes/Footer";
+import { Box, Container, Grid, TextField } from "@mui/material";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,7 +17,29 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${styles.main} ${inter.className}`}>Hello World</main>
+      <Container
+        maxWidth="xl"
+        sx={{
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Box sx={{
+          width: "90%",
+          height: "80%",
+          borderRadius: 2,
+          backgroundColor: 'teal',
+          boxSizing: "border-box"
+        }}>
+          <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+          <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+          <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+          <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+        </Box>
+      </Container>
+      <Footer />
     </>
   );
 }
