@@ -8,7 +8,10 @@ import {
   Button,
   Container,
   CssBaseline,
+  Divider,
   Grid,
+  List,
+  ListItem,
   Paper,
   Table,
   TableBody,
@@ -17,22 +20,21 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Typography,
+  useTheme,
 } from "@mui/material";
 import SwipeableTemporaryDrawer from "@/componentes/Layout";
 import Header from "@/componentes/Header";
+import { Stack } from "@mui/system";
+import { IClientes } from "@/interfaces/clientes.interface";
+import { connection } from "@/api";
+import { MenuLateral } from "@/componentes/MenuLateral";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
-  const customers = [
-    {
-      name: "Emer",
-      email: "eu@mail",
-      phone: "4178789898",
-      address: "Rua das flores",
-      cpf: "01101101111",
-    },
-  ];
+export default function Home(cliente: any) {
+
+  const theme = useTheme();
 
   return (
     <>
@@ -53,54 +55,43 @@ export default function Home() {
         }}
       >
         <Header />
-        <Box sx={{ height: "100%" }}>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Nome</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Telefone</TableCell>
-                  <TableCell>Endereço</TableCell>
-                  <TableCell>CPF</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {customers?.map((row: any) => (
-                  <TableRow key={row.name}>
-                    <TableCell component="th" scope="row">
-                      {row.name}
-                    </TableCell>
-                    <TableCell>{row.email}</TableCell>
-                    <TableCell>{row.phone}</TableCell>
-                    <TableCell>{row.address}</TableCell>
-                    <TableCell>{row.cpf}</TableCell>
-                    <TableCell>
-                      <Button
-                        id={row._id}
-                        onClick={(e: any) => console.log(e.target.id)}
-                      >
-                        DELETAR
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        id={row._id}
-                        onClick={(e: any) => console.log(e.target.id)}
-                      >
-                        EDITAR
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-      </Container>
+        <MenuLateral />
+        <List>
+          {cliente?.cliente.map((row: IClientes) => (
+            <div key={row.id}>
+              <ListItem sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Box color={theme.palette.primary.dark} >
+                  <Typography variant="h6">ID</Typography>
+                  <Typography>{row.id}</Typography>
+                </Box>
+                <Box><Typography>nome:</Typography><Typography>{row.nome}</Typography></Box>
+                <Box><Typography>tipoDocumento:</Typography><Typography>{row.tipoDocumento}</Typography></Box>
+                <Box><Typography>numeroDocumento:</Typography><Typography>{row.numeroDocumento}</Typography></Box>
+                <Box><Typography>logradouro:</Typography><Typography>{row.logradouro}</Typography></Box>
+                <Box><Typography>numero:</Typography><Typography>{row.numero}</Typography></Box>
+              </ListItem >
+              <Divider />
+            </div>
+          ))}
+        </List>
+
+      </Container >
       <Footer />
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const cli = await connection.get("/Cliente");
+  const cliente = await cli.data;
+  const cond = await connection.get("/Condutor");
+  const condutor = await cond.data;
+  const desloc = await connection.get("/Deslocamento");
+  const deslocamento = await desloc.data;
+  const veic = await connection.get("/Veiculo");
+  const veiculo = await veic.data;
+  const weather = await connection.get("/WeatherForecast");
+  const weatherForCast = await weather.data;
+
+  return { props: { cliente, condutor, deslocamento, veiculo, weatherForCast } };
+};
