@@ -19,5 +19,8 @@ export const MainTheme = createTheme({
       default: "#f8f8f8",
       paper: "#fff"
     }
+  },
+  breakpoints: {
+
   }
 })

@@ -24,6 +24,7 @@ interface Props {
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
    */
+  children: React.ReactNode;
   title?: string;
   window?: () => Window;
 }
@@ -135,6 +136,7 @@ export default function ResponsiveDrawer(props: Props) {
         }}
       >
         <Toolbar />
+        {props.children}
       </Box>
     </Box>
   );
