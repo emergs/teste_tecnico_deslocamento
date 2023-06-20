@@ -1,5 +1,7 @@
+import ResponsiveDrawer from "@/componentes/Layout";
+
 const VehiclePage = () => {
-  return <h1>VehiclePage</h1>;
+  return <ResponsiveDrawer />;
 };
 
 export default VehiclePage;

@@ -23,17 +23,15 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import SwipeableTemporaryDrawer from "@/componentes/Layout";
+import ResponsiveDrawer from "@/componentes/Layout";
 import Header from "@/componentes/Header";
 import { Stack } from "@mui/system";
 import { IClientes } from "@/interfaces/clientes.interface";
 import { connection } from "@/api";
-import { MenuLateral } from "@/componentes/MenuLateral";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home(cliente: any) {
-
   const theme = useTheme();
 
   return (
@@ -44,6 +42,7 @@ export default function Home(cliente: any) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <ResponsiveDrawer />
       <CssBaseline />
       <Container
         maxWidth="xl"
@@ -54,28 +53,42 @@ export default function Home(cliente: any) {
           flexDirection: "column",
         }}
       >
-        <Header />
-        <MenuLateral />
         <List>
           {cliente?.cliente.map((row: IClientes) => (
             <div key={row.id}>
-              <ListItem sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Box color={theme.palette.primary.dark} >
+              <ListItem
+                sx={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <Box color={theme.palette.primary.dark}>
                   <Typography variant="h6">ID</Typography>
                   <Typography>{row.id}</Typography>
                 </Box>
-                <Box><Typography>nome:</Typography><Typography>{row.nome}</Typography></Box>
-                <Box><Typography>tipoDocumento:</Typography><Typography>{row.tipoDocumento}</Typography></Box>
-                <Box><Typography>numeroDocumento:</Typography><Typography>{row.numeroDocumento}</Typography></Box>
-                <Box><Typography>logradouro:</Typography><Typography>{row.logradouro}</Typography></Box>
-                <Box><Typography>numero:</Typography><Typography>{row.numero}</Typography></Box>
-              </ListItem >
+                <Box>
+                  <Typography>nome:</Typography>
+                  <Typography>{row.nome}</Typography>
+                </Box>
+                <Box>
+                  <Typography>tipoDocumento:</Typography>
+                  <Typography>{row.tipoDocumento}</Typography>
+                </Box>
+                <Box>
+                  <Typography>numeroDocumento:</Typography>
+                  <Typography>{row.numeroDocumento}</Typography>
+                </Box>
+                <Box>
+                  <Typography>logradouro:</Typography>
+                  <Typography>{row.logradouro}</Typography>
+                </Box>
+                <Box>
+                  <Typography>numero:</Typography>
+                  <Typography>{row.numero}</Typography>
+                </Box>
+              </ListItem>
               <Divider />
             </div>
           ))}
         </List>
-
-      </Container >
+      </Container>
       <Footer />
     </>
   );
@@ -93,5 +106,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const weather = await connection.get("/WeatherForecast");
   const weatherForCast = await weather.data;
 
-  return { props: { cliente, condutor, deslocamento, veiculo, weatherForCast } };
+  return {
+    props: { cliente, condutor, deslocamento, veiculo, weatherForCast },
+  };
 };
