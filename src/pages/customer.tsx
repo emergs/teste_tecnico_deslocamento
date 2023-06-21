@@ -31,6 +31,8 @@ import { useForm } from "react-hook-form";
 const CustomerPage = (cliente: any) => {
   //estado para guardar o cliente que está sendo buscado por id
   const [customer, setCustomer] = useState<IClientes>({} as IClientes);
+  const [customerEdit, setCustomerEdit] = useState<IClientes>({} as IClientes);
+  let [name, setName] = useState<string>('')
   const [searchCustomer, setSearchCustomer] = useState<string>("");
 
   //controle do modal
@@ -111,16 +113,17 @@ const CustomerPage = (cliente: any) => {
       const request = await connection.get(`/Cliente/${id}`);
       setCustomer(request.data);
       console.log(customer);
+      setValue("nome", customer.nome)
     } catch (error) {
       console.log(error);
     }
   };
   //funçao para atualizar cliente
-  const updateCustomer = async (id: string, data: IClientes) => {
+  const updateCustomer = async (data: IClientes) => {
     try {
-      await connection.put(`/Cliente/${id}`, {
+      await connection.put(`/Cliente/${data.id}`, {
         data: {
-          id: id,
+          id: data.id,
           numeroDocumento: data.numeroDocumento,
           tipoDocumento: data.tipoDocumento,
           nome: data.nome,
@@ -132,6 +135,7 @@ const CustomerPage = (cliente: any) => {
         },
       });
       console.log("Cliente atualizado com sucesso");
+      reset()
     } catch (error) {
       console.log(error);
     }
@@ -143,6 +147,8 @@ const CustomerPage = (cliente: any) => {
     handleSubmit,
     register,
     formState: { errors },
+    reset,
+    setValue
   } = useForm<IClientes>();
 
   return (
@@ -245,48 +251,56 @@ const CustomerPage = (cliente: any) => {
                   id="outlined-basic"
                   label="Nome"
                   variant="outlined"
+                  content={customer.nome}
                   {...register("nome")}
                 />
                 <TextField
                   id="outlined-basic"
                   label="Numero do Documento"
                   variant="outlined"
+                  value={customer.numeroDocumento}
                   {...register("numeroDocumento")}
                 />
                 <TextField
                   id="outlined-basic"
                   label="Tipo do Documen"
                   variant="outlined"
+                  value={customer.tipoDocumento}
                   {...register("tipoDocumento")}
                 />
                 <TextField
                   id="outlined-basic"
                   label="Logradouro"
                   variant="outlined"
+                  value={customer.logradouro}
                   {...register("logradouro")}
                 />
                 <TextField
                   id="outlined-basic"
                   label="Número"
                   variant="outlined"
+                  value={customer.numero}
                   {...register("numero")}
                 />
                 <TextField
                   id="outlined-basic"
                   label="Bairro"
                   variant="outlined"
+                  value={customer.bairro}
                   {...register("bairro")}
                 />
                 <TextField
                   id="outlined-basic"
                   label="Cidade"
                   variant="outlined"
+                  value={customer.cidade}
                   {...register("cidade")}
                 />
                 <TextField
                   id="outlined-basic"
                   label="UF"
                   variant="outlined"
+                  value={customer.uf}
                   {...register("uf")}
                 />
                 <Button type="submit">Cadastrar</Button>
